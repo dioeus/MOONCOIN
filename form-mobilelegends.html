@@ -157,8 +157,17 @@
     <h2>Top Up Mobile Legends</h2>
     <form id="formTopup">
       <table>
-        <tr><td><div class="card"><label for="userid">User ID</label><input type="text" id="userid" placeholder="Contoh: 12345678" pattern="[0-9]{5,}" required></div></td></tr>
-        <tr><td><div class="card"><label for="zoneid">Zone ID</label><input type="text" id="zoneid" placeholder="Contoh: 1234" pattern="[0-9]{1,5}" required></div></td></tr>
+        <tr>
+          <td>
+            <div class="card">
+              <label>User ID dan Zone ID</label>
+              <div style="display: flex; gap: 10px;">
+                <input type="text" id="userid" placeholder="User ID" pattern="[0-9]{5,}" required style="flex: 2;">
+                <input type="text" id="zoneid" placeholder="Zone ID" pattern="[0-9]{1,5}" required style="flex: 1;">
+              </div>
+            </div>
+          </td>
+        </tr>
         <tr><td><div class="card"><label>Pilih Nominal</label><div class="price-options" id="nominals">
           <div data-nominal="ML1" data-harga="20000">86 Diamond - Rp 20.000</div>
           <div data-nominal="ML2" data-harga="39000">172 Diamond - Rp 39.000</div>
