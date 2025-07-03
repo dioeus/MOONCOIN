@@ -1,3 +1,188 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Top Up Mobile Legends - MOONCOIN</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #0e0e0e;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #1a1a1a;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    header img {
+      height: 40px;
+    }
+    nav a {
+      color: #fff;
+      margin-left: 20px;
+      text-decoration: none;
+    }
+    .main-content {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 20px;
+      max-width: 1100px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+    .container {
+      background: #1a1a1a;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+    }
+    h2 {
+      color: #ffcc00;
+      margin-bottom: 20px;
+    }
+    table {
+      width: 100%;
+      border-spacing: 0 20px;
+    }
+    td {
+      padding: 0;
+    }
+    .card {
+      background: #2a2a2a;
+      padding: 20px;
+      border-radius: 10px;
+      border: 1px solid #333;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      background: #1c1c1c;
+      color: #fff;
+    }
+    .price-options, .payment-methods {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+    .price-options div, .payment-methods div {
+      background: #1c1c1c;
+      padding: 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      text-align: center;
+      transition: 0.2s ease;
+      border: 1px solid #333;
+    }
+    .price-options div:hover, .payment-methods div:hover {
+      background: #333;
+    }
+    .selected {
+      background-color: #ffcc00 !important;
+      color: #000;
+      font-weight: bold;
+      border: none !important;
+    }
+    .total {
+      font-size: 18px;
+      font-weight: bold;
+      color: #ffcc00;
+    }
+    .btn {
+      margin-top: 20px;
+      padding: 12px;
+      width: 100%;
+      border: none;
+      background: #ffcc00;
+      color: #000;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 8px;
+    }
+    .btn:hover {
+      background: #e6b800;
+    }
+    .banner {
+      background: url('https://cdn.digiflazz.com/images/brand/mlbb.png') no-repeat center center;
+      background-size: cover;
+      height: 100%;
+      border-radius: 12px;
+      background-color: #1a1a1a;
+      min-height: 400px;
+    }
+    footer {
+      text-align: center;
+      background: #1a1a1a;
+      padding: 20px;
+      margin-top: 40px;
+      color: #888;
+    }
+    @media (max-width: 900px) {
+      .main-content {
+        grid-template-columns: 1fr;
+      }
+      .banner {
+        height: 150px;
+        background-size: contain;
+      }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <a href="index.html"><img src="assets/logo-mooncoin.png" alt="MOONCOIN Logo"></a>
+  <nav>
+    <a href="index.html">Beranda</a>
+    <a href="formulir.html">Formulir</a>
+    <a href="#kontak">Kontak</a>
+  </nav>
+</header>
+<div class="main-content">
+  <div class="container">
+    <h2>Top Up Mobile Legends</h2>
+    <form id="formTopup">
+      <table>
+        <tr><td><div class="card"><label for="userid">User ID</label><input type="text" id="userid" placeholder="Contoh: 12345678" pattern="[0-9]{5,}" required></div></td></tr>
+        <tr><td><div class="card"><label for="zoneid">Zone ID</label><input type="text" id="zoneid" placeholder="Contoh: 1234" pattern="[0-9]{1,5}" required></div></td></tr>
+        <tr><td><div class="card"><label>Pilih Nominal</label><div class="price-options" id="nominals">
+          <div data-nominal="ML1" data-harga="20000">86 Diamond - Rp 20.000</div>
+          <div data-nominal="ML2" data-harga="39000">172 Diamond - Rp 39.000</div>
+          <div data-nominal="ML3" data-harga="58000">257 Diamond - Rp 58.000</div>
+          <div data-nominal="ML4" data-harga="76000">344 Diamond - Rp 76.000</div>
+        </div></div></td></tr>
+        <tr><td><div class="card"><label>Metode Pembayaran</label><div class="payment-methods" id="payments">
+          <div data-metode="Dana" data-fee="1000">Dana</div>
+          <div data-metode="OVO" data-fee="1500">OVO</div>
+          <div data-metode="Bank BCA" data-fee="2000">Bank BCA</div>
+          <div data-metode="QRIS" data-fee="500">QRIS</div>
+        </div></div></td></tr>
+        <tr><td><div class="card"><label for="bukti">Upload Bukti Transfer</label><input type="file" id="bukti" accept="image/*"></div></td></tr>
+        <tr><td><div class="card total">Total Harga: <span id="total">Rp 0</span></div></td></tr>
+        <tr><td><button type="button" class="btn" id="submitBtn">Konfirmasi & Kirim</button></td></tr>
+      </table>
+    </form>
+  </div>
+  <div class="banner"></div>
+</div>
+<footer>
+  <p>&copy; 2025 MOONCOIN. All rights reserved.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 <script>
 window.onload = function () {
   let selectedHarga = 0;
@@ -5,7 +190,6 @@ window.onload = function () {
   let nominalText = '';
   let metodeText = '';
   let buyerSku = '';
-
   const totalElement = document.getElementById('total');
   const nominals = document.querySelectorAll('#nominals div');
   const payments = document.querySelectorAll('#payments div');
@@ -16,7 +200,7 @@ window.onload = function () {
       el.classList.add('selected');
       selectedHarga = parseInt(el.dataset.harga);
       nominalText = el.textContent;
-      buyerSku = el.dataset.nominal; // pakai nominal sebagai SKU Digiflazz
+      buyerSku = el.dataset.nominal;
       updateTotal();
     });
   });
@@ -47,26 +231,21 @@ window.onload = function () {
   document.getElementById('submitBtn').addEventListener('click', () => {
     const userID = document.getElementById('userid').value.trim();
     const zoneID = document.getElementById('zoneid').value.trim();
-
     if (!userID || !zoneID || !nominalText || !metodeText) {
-      alert('Mohon lengkapi semua data terlebih dahulu.');
-      return;
+      alert('Mohon lengkapi semua data terlebih dahulu.'); return;
     }
-
     if (!isValidMLID(userID, zoneID)) {
-      alert('Format User ID atau Zone ID Mobile Legends tidak valid. Gunakan angka saja.');
-      return;
+      alert('Format User ID atau Zone ID tidak valid.'); return;
     }
-
     const refId = 'ML-' + Date.now();
     const username = 'USERNAME_DIGIFLAZZ';
     const apiKey = 'APIKEY_DIGIFLAZZ';
     const signature = generateSignature(username, apiKey, refId);
 
-    const data = {
+    const payload = {
       username: username,
       buyer_sku_code: buyerSku,
-      customer_no: `${userID}${zoneID}`,
+      customer_no: userID + zoneID,
       ref_id: refId,
       sign: signature
     };
@@ -74,23 +253,19 @@ window.onload = function () {
     fetch('https://api.digiflazz.com/v1/transaction', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, buyer_sku_code: data.buyer_sku_code, customer_no: data.customer_no, ref_id: data.ref_id, sign: data.sign })
+      body: JSON.stringify(payload)
     })
     .then(res => res.json())
     .then(res => {
       if (res.data && res.data.status === 'Pending') {
         alert('Top up berhasil dikirim. Status: Pending. RefID: ' + refId);
-        window.open(`https://wa.me/6281234567890?text=${encodeURIComponent(
-          `Halo Admin, saya sudah top up:\n\n🆔 ${userID} (${zoneID})\n💎 ${nominalText}\n💰 ${metodeText}\n📦 Total: Rp ${(selectedHarga + selectedFee).toLocaleString('id-ID')}\n🔖 RefID: ${refId}`)}`, '_blank');
       } else {
-        alert('Gagal melakukan transaksi: ' + res.data.message);
+        alert('Gagal: ' + (res.data.message || 'Tidak diketahui'));
       }
     })
-    .catch(err => {
-      alert('Terjadi kesalahan: ' + err.message);
-    });
+    .catch(err => alert('Error: ' + err.message));
   });
 };
 </script>
-<!-- Tambahkan library MD5 dari CryptoJS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+</body>
+</html>
