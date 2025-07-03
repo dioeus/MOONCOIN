@@ -188,7 +188,7 @@
           <td>
             <div class="card">
               <label for="userid">User ID</label>
-              <input type="text" id="userid" placeholder="Masukkan Riot ID Anda" required>
+              <input type="text" id="userid" placeholder="Contoh: Phoenix#IDN" required>
             </div>
           </td>
         </tr>
@@ -287,10 +287,20 @@ window.onload = function () {
     totalElement.textContent = 'Rp ' + total.toLocaleString('id-ID');
   }
 
+  function isValidRiotID(id) {
+    const riotIdPattern = /^[a-zA-Z0-9 ]{3,16}#[a-zA-Z0-9]{3,5}$/;
+    return riotIdPattern.test(id);
+  }
+
   document.getElementById('submitBtn').addEventListener('click', () => {
     const userID = document.getElementById('userid').value.trim();
     if (!userID || !nominalText || !metodeText) {
       alert('Mohon lengkapi semua data terlebih dahulu.');
+      return;
+    }
+
+    if (!isValidRiotID(userID)) {
+      alert('Format User ID Valorant tidak valid. Gunakan format: Nama#TAG (contoh: Phoenix#IDN)');
       return;
     }
 
