@@ -1,0 +1,96 @@
+<script>
+window.onload = function () {
+  let selectedHarga = 0;
+  let selectedFee = 0;
+  let nominalText = '';
+  let metodeText = '';
+  let buyerSku = '';
+
+  const totalElement = document.getElementById('total');
+  const nominals = document.querySelectorAll('#nominals div');
+  const payments = document.querySelectorAll('#payments div');
+
+  nominals.forEach(el => {
+    el.addEventListener('click', () => {
+      nominals.forEach(n => n.classList.remove('selected'));
+      el.classList.add('selected');
+      selectedHarga = parseInt(el.dataset.harga);
+      nominalText = el.textContent;
+      buyerSku = el.dataset.nominal; // pakai nominal sebagai SKU Digiflazz
+      updateTotal();
+    });
+  });
+
+  payments.forEach(el => {
+    el.addEventListener('click', () => {
+      payments.forEach(p => p.classList.remove('selected'));
+      el.classList.add('selected');
+      selectedFee = parseInt(el.dataset.fee);
+      metodeText = el.dataset.metode;
+      updateTotal();
+    });
+  });
+
+  function updateTotal() {
+    const total = selectedHarga + selectedFee;
+    totalElement.textContent = 'Rp ' + total.toLocaleString('id-ID');
+  }
+
+  function isValidMLID(id, zone) {
+    return /^[0-9]{5,}$/.test(id) && /^[0-9]{1,5}$/.test(zone);
+  }
+
+  function generateSignature(username, apiKey, refId) {
+    return CryptoJS.MD5(username + apiKey + refId).toString();
+  }
+
+  document.getElementById('submitBtn').addEventListener('click', () => {
+    const userID = document.getElementById('userid').value.trim();
+    const zoneID = document.getElementById('zoneid').value.trim();
+
+    if (!userID || !zoneID || !nominalText || !metodeText) {
+      alert('Mohon lengkapi semua data terlebih dahulu.');
+      return;
+    }
+
+    if (!isValidMLID(userID, zoneID)) {
+      alert('Format User ID atau Zone ID Mobile Legends tidak valid. Gunakan angka saja.');
+      return;
+    }
+
+    const refId = 'ML-' + Date.now();
+    const username = 'USERNAME_DIGIFLAZZ';
+    const apiKey = 'APIKEY_DIGIFLAZZ';
+    const signature = generateSignature(username, apiKey, refId);
+
+    const data = {
+      username: username,
+      buyer_sku_code: buyerSku,
+      customer_no: `${userID}${zoneID}`,
+      ref_id: refId,
+      sign: signature
+    };
+
+    fetch('https://api.digiflazz.com/v1/transaction', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, buyer_sku_code: data.buyer_sku_code, customer_no: data.customer_no, ref_id: data.ref_id, sign: data.sign })
+    })
+    .then(res => res.json())
+    .then(res => {
+      if (res.data && res.data.status === 'Pending') {
+        alert('Top up berhasil dikirim. Status: Pending. RefID: ' + refId);
+        window.open(`https://wa.me/6281234567890?text=${encodeURIComponent(
+          `Halo Admin, saya sudah top up:\n\n🆔 ${userID} (${zoneID})\n💎 ${nominalText}\n💰 ${metodeText}\n📦 Total: Rp ${(selectedHarga + selectedFee).toLocaleString('id-ID')}\n🔖 RefID: ${refId}`)}`, '_blank');
+      } else {
+        alert('Gagal melakukan transaksi: ' + res.data.message);
+      }
+    })
+    .catch(err => {
+      alert('Terjadi kesalahan: ' + err.message);
+    });
+  });
+};
+</script>
+<!-- Tambahkan library MD5 dari CryptoJS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
